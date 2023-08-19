@@ -23,11 +23,13 @@ Route::middleware(['auth:api'])->get('/user', function (Request $request) {
 /* Grupo de Rotas Não-Autenticadas */
 Route::group(['middleware' => 'guest:api'], function () {
     Route::post('/login', [LoginController::class, 'login'])->name('login');
-    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 });
 
 /* Grupo de Rotas Autenticadas */
 Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
+    /* CRUDs */
     Route::apiResources([
         'users' =>'UserController', // Rotas de Usuários
     ]);
