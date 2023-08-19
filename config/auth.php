@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+            'hash' => false,
+        ],
     ],
 
     /*
@@ -111,5 +116,7 @@ return [
     */
 
     'password_timeout' => 10800,
+
+    'dafault_passport_client' => "ExpensesManagementSystemLocal Personal Access Client"
 
 ];
