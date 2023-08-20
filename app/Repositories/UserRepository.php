@@ -28,7 +28,7 @@ class UserRepository implements RepositoryInterface
     public function destroy(int $userId): void
     {
         DB::transaction(function () use ($userId) {
-            return $this->model->find($userId)->delete();
+            return $this->model->findOrFail($userId)->delete();
         });
     }
 
