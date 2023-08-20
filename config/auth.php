@@ -116,6 +116,6 @@ return [
 
     'password_timeout' => 10800,
 
-    'dafault_passport_client' => "ExpensesManagementSystemLocal Personal Access Client"
+    'default_passport_client' => "ExpensesManagementSystem"
 
 ];

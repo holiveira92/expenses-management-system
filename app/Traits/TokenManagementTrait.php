@@ -15,8 +15,8 @@ trait TokenManagementTrait
      */
     public function generateToken(): string
     {
-        return Auth::user()
-            ->createToken(config("auth.dafault_passport_client"))
+        $user = Auth::user();
+        return $user->createToken(config("auth.default_passport_client") . $user->name)
             ?->accessToken ?? "";
         
     }
