@@ -30,7 +30,7 @@ class UpdateRequest extends FormRequest
         return [
             'description' => ["sometimes", "string", "max:191"],
             'occurrence_date' => ["sometimes", "date", "date_format:Y-m-d", "before:tomorrow"],
-            'user_id' => ["sometimes", "integer", "exists:users,id", new VerifyIsOwnerUser()],
+            'user_id' => ["sometimes", "integer", "exists:users,id"],
             'value' => ["sometimes", "numeric", "gt:0"],
         ];
     }

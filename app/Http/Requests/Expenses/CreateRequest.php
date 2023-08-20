@@ -27,7 +27,7 @@ class CreateRequest extends FormRequest
         return [
             'description' => ["required", "string", "max:191"],
             'occurrence_date' => ["required", "date", "date_format:Y-m-d", "before:tomorrow"],
-            'user_id' => ["required", "integer", "exists:users,id", new VerifyIsOwnerUser()],
+            'user_id' => ["required", "integer", "exists:users,id"],
             'value' => ["required", "numeric", "gt:0"],
         ];
     }
