@@ -6,17 +6,21 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use App\Models\Expense;
+use Carbon\Carbon;
 
 class ExpenseCreated extends Notification
 {
     use Queueable;
 
+    protected Expense $expense;
+
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(Expense $expense)
     {
-        //
+        $this->expense = $expense;
     }
 
     /**
@@ -35,9 +39,12 @@ class ExpenseCreated extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->greeting('Olá ' . $this->expense->user->name ?? "")
+                    ->subject("Nova Despesa Criada")
+                    ->line('Você acabou de lançar uma nova despesa no sistema. Confira os detalhes:')
+                    ->line('Descrição: ' . $this->expense->description )
+                    ->line('Valor: R$' . $this->expense->value )
+                    ->line('Data da Ocorrência: ' . Carbon::parse($this->expense->occurrence_date)->format("d/m/Y") );
     }
 
     /**

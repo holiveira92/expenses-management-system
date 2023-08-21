@@ -23,23 +23,4 @@ class ExpensePolicy
         return $expense->user->is($user);
     }
 
-    public function create(User $user)
-    {
-        
-    }
-
-    public function update(User $user, Expense $expense)
-    {
-        return $expense->user->is($user);
-    }
-
-    public function delete(User $user, Expense $expense)
-    {
-        return $expense->user->is($user);
-    }
-
-    public function view(User $user, Expense $expense)
-    {
-        return $expense->user->is($user);
-    }
 }
