@@ -4,6 +4,7 @@ namespace App\Http\Requests\Expenses;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Policies\ExpensePolicy;
+use App\Rules\Expenses\VerifyIsOwnerUserRule;
 
 class UpdateRequest extends FormRequest
 {
@@ -27,7 +28,7 @@ class UpdateRequest extends FormRequest
         return [
             'description' => ["sometimes", "string", "max:191"],
             'occurrence_date' => ["sometimes", "date", "date_format:Y-m-d", "before:tomorrow"],
-            'user_id' => ["sometimes", "integer", "exists:users,id"],
+            'user_id' => ["sometimes", "integer", "exists:users,id", new VerifyIsOwnerUserRule()],
             'value' => ["sometimes", "numeric", "gt:0"],
         ];
     }
