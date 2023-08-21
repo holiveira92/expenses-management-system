@@ -25,7 +25,7 @@ class ExpenseRepository implements RepositoryInterface
         return $this->model->with("user")->find($expenseId);
     }
 
-    public function getByUser(int $expenseId, ?string $filterDate): Collection
+    public function getByUser(int $expenseId, ?string $filterDate=null): Collection
     {
         $query = $this->model->where('user_id', $expenseId);
 

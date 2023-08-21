@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Requests\Expenses\CreateRequest;
 use App\Http\Requests\Expenses\UpdateRequest;
+use App\Http\Requests\Expenses\ViewRequest;
+use App\Models\Expense;
 use App\Services\ExpenseService;
 use App\Http\Resources\Expenses\ExpensesCollection;
 use App\Http\Resources\Expenses\ExpensesResource;
@@ -22,13 +24,13 @@ class ExpensesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $response = $this->expenseService->getCollection();
+            $response = $this->expenseService->getAllExpensesByUser($request->user()->id);
             return response()->json(new ExpensesCollection($response), Response::HTTP_OK);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['error' => "Internal Server Error"], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -41,48 +43,33 @@ class ExpensesController extends Controller
             $response = $this->expenseService->store($request->validated());
             return response()->json($response, Response::HTTP_OK); 
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['error' => "Internal Server Error"], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(int $expenseId)
+    public function show(ViewRequest $request, Expense $expense)
     {
         try {
-            $expense = $this->expenseService->get($expenseId);
-            $this->authorize("view", [ $expense, $expense->user ]);
+            $expense = $this->expenseService->get($expense->id);
             return response()->json(new ExpensesResource($expense), Response::HTTP_OK);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function showAllByUser(int $expenseId, string $filterDate=null)
-    {
-        try {
-            $response = $this->expenseService->getAllExpensesByUser($expenseId, $filterDate);
-            return response()->json(new ExpensesCollection($response), Response::HTTP_OK);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['error' => "Internal Server Error"], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, int $expenseId)
+    public function update(UpdateRequest $request, Expense $expense)
     {
         try {
-            $expense = $this->expenseService->update($expenseId, $request->all());
-            $this->authorize("update", [ $expense, $expense->user ]);
+            $expense = $this->expenseService->update($expense->id, $request->all());
             return response()->json($expense,Response::HTTP_OK);  
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['error' => "Internal Server Error"], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -95,7 +82,7 @@ class ExpensesController extends Controller
             $this->expenseService->destroy($expenseId);
             return response()->json([], Response::HTTP_NO_CONTENT);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['error' => "Internal Server Error"], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

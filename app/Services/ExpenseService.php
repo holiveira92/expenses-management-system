@@ -43,7 +43,7 @@ class ExpenseService
      * @param int $userId - ID do usuario
      * @return Collection - collection de despesas
      */
-    public function getAllExpensesByUser(int $userId, ?string $filterDate): Collection
+    public function getAllExpensesByUser(int $userId, ?string $filterDate=null): Collection
     {
         return $this->repository->getByUser($userId, $filterDate);
     }
