@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use App\Http\Requests\Expenses\CreateRequest;
 use App\Http\Requests\Expenses\UpdateRequest;
 use App\Http\Requests\Expenses\ViewRequest;
+use App\Http\Requests\Expenses\DeleteRequest;
 use App\Models\Expense;
 use App\Services\ExpenseService;
 use App\Http\Resources\Expenses\ExpensesCollection;
@@ -76,10 +77,10 @@ class ExpensesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $expenseId)
+    public function destroy(DeleteRequest $deleteRequest, Expense $expense)
     {
         try {
-            $this->expenseService->destroy($expenseId);
+            $this->expenseService->destroy($expense->id);
             return response()->json([], Response::HTTP_NO_CONTENT);
         } catch (\Exception $e) {
             return response()->json(['error' => "Internal Server Error"], Response::HTTP_INTERNAL_SERVER_ERROR);

@@ -33,4 +33,9 @@ class ExpensePolicy
         return $user->id === $requestUserId;
     }
 
+    public static function userCanDelete(User $user, Expense $expense)
+    {
+        return $expense->user->is($user);
+    }
+
 }
