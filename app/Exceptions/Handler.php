@@ -7,6 +7,8 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use APIException;
+
     /**
      * The list of the inputs that are never flashed to the session on validation exceptions.
      *
@@ -23,8 +25,10 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (Throwable $e, $request) {
+            if ($request->is('api/*')) {
+                return $this->getJsonException($request, $e);
+            }
         });
     }
 }
