@@ -51,8 +51,9 @@ class ExpensesController extends Controller
     public function show(int $expenseId)
     {
         try {
-            $response = $this->expenseService->get($expenseId);
-            return response()->json(new ExpensesResource($response), Response::HTTP_OK);
+            $expense = $this->expenseService->get($expenseId);
+            $this->authorize("view", [ $expense, $expense->user ]);
+            return response()->json(new ExpensesResource($expense), Response::HTTP_OK);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -77,8 +78,9 @@ class ExpensesController extends Controller
     public function update(UpdateRequest $request, int $expenseId)
     {
         try {
-            $response = $this->expenseService->update($expenseId, $request->all());
-            return response()->json($response,Response::HTTP_OK);  
+            $expense = $this->expenseService->update($expenseId, $request->all());
+            $this->authorize("update", [ $expense, $expense->user ]);
+            return response()->json($expense,Response::HTTP_OK);  
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }

@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Expenses;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Rules\Expenses\VerifyIsOwnerUser;
+use App\Rules\Expenses\VerifyIsOwnerUserRule;
 
 class CreateRequest extends FormRequest
 {
@@ -27,7 +27,7 @@ class CreateRequest extends FormRequest
         return [
             'description' => ["required", "string", "max:191"],
             'occurrence_date' => ["required", "date", "date_format:Y-m-d", "before:tomorrow"],
-            'user_id' => ["required", "integer", "exists:users,id"],
+            'user_id' => ["required", "integer", "exists:users,id", new VerifyIsOwnerUserRule()],
             'value' => ["required", "numeric", "gt:0"],
         ];
     }

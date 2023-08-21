@@ -32,7 +32,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     /* CRUDs */
     Route::apiResources([
         'users' =>'UserController', // Rotas de Usuários
-        'expenses' =>'ExpensesController', // Rotas de Usuários
+        'expenses' =>'ExpensesController', // Rotas de Despesas
     ]);
     Route::get('/expenses/list/{userId}/{filterDate?}', [ExpensesController::class, 'showAllByUser'])->name('expenses.list.user');
 });
