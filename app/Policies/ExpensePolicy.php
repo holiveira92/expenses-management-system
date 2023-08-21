@@ -18,9 +18,19 @@ class ExpensePolicy
     {
     }
 
-    public function canDoSomethingWith(User $user, Expense $expense)
+    public static function userCanSave(User $user, Expense $expense)
     {
         return $expense->user->is($user);
+    }
+
+    public static function userCanView(User $user, Expense $expense)
+    {
+        return $expense->user->is($user);
+    }
+
+    public static function userCanCreate(User $user, int $requestUserId)
+    {
+        return $user->id === $requestUserId;
     }
 
 }

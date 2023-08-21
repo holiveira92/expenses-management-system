@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Expenses;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Rules\Expenses\VerifyIsOwnerUserRule;
+use App\Policies\ExpensePolicy;
 
 class CreateRequest extends FormRequest
 {
@@ -14,7 +14,7 @@ class CreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return ExpensePolicy::userCanCreate($this->user(), $this->user_id);
     }
 
     /**
@@ -27,7 +27,7 @@ class CreateRequest extends FormRequest
         return [
             'description' => ["required", "string", "max:191"],
             'occurrence_date' => ["required", "date", "date_format:Y-m-d", "before:tomorrow"],
-            'user_id' => ["required", "integer", "exists:users,id", new VerifyIsOwnerUserRule()],
+            'user_id' => ["required", "integer", "exists:users,id"],
             'value' => ["required", "numeric", "gt:0"],
         ];
     }

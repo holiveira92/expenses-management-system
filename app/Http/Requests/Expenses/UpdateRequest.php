@@ -3,10 +3,7 @@
 namespace App\Http\Requests\Expenses;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\Response;
-use App\Rules\Expenses\VerifyIsOwnerUser;
+use App\Policies\ExpensePolicy;
 
 class UpdateRequest extends FormRequest
 {
@@ -17,7 +14,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return ExpensePolicy::userCanSave($this->user(), $this->expense);
     }
 
     /**
