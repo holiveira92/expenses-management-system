@@ -32,7 +32,7 @@
 ```
 
 
-## Execução
+## Execução Local
 Portas da API: Padrão 
 APP_PORT=8000
 
@@ -46,4 +46,9 @@ ou
 Docker
 ```sh
  docker-compose up -d
+```
+
+## Documentação
+```sh
+ https://documenter.getpostman.com/view/2s9Y5Tzjiy?version=latest
 ```
