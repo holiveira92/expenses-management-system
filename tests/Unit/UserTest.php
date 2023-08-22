@@ -33,18 +33,10 @@ class UserTest extends TestCase
         return User::select('id')->inRandomOrder()->first()->id ?? 1;
     }
 
-    private function getUpdateData(): array
+    private function getFakeData(): array
     {
         return [
-            "name" => "UPDATED",
-            "email" => fake()->unique()->safeEmail()
-        ];
-    }
-
-    private function getCreatedData(): array
-    {
-        return [
-            "name" => "CREATED",
+            "name" => "SAVED",
             "email" => fake()->unique()->safeEmail(),
             "password" => Hash::make("test")
         ];
@@ -73,15 +65,15 @@ class UserTest extends TestCase
     public function testUpdateUserReturnsInstanceOfUserModel()
     {
         $user = User::findOrFail($this->getRandomUserId());
-        $mockedUser = $this->serviceMock->update($user->id, $this->getUpdateData());
+        $mockedUser = $this->serviceMock->update($user->id, $this->getFakeData());
         $this->assertInstanceOf(User::class, $mockedUser);
     }
 
     public function testUpdateUserValidSaveName()
     {
         $user = User::findOrFail($this->getRandomUserId());
-        $mockedUser = $this->serviceMock->update($user->id, $this->getUpdateData());
-        $this->assertEquals($this->getUpdateData()["name"], $mockedUser->name);
+        $mockedUser = $this->serviceMock->update($user->id, $this->getFakeData());
+        $this->assertEquals($this->getFakeData()["name"], $mockedUser->name);
     }
 
     public function testGetUsersReturnsInstanceOfCollection()
@@ -92,14 +84,14 @@ class UserTest extends TestCase
 
     public function testCreateUserReturnsInstanceOfUserModel()
     {
-        $mockedUser = $this->serviceMock->store($this->getCreatedData());
+        $mockedUser = $this->serviceMock->store($this->getFakeData());
         $this->assertInstanceOf(User::class, $mockedUser);
     }
 
     public function testCreateUserValidSaveName()
     {
-        $mockedUser = $this->serviceMock->store($this->getCreatedData());
-        $this->assertEquals($this->getCreatedData()["name"], $mockedUser->name);
+        $mockedUser = $this->serviceMock->store($this->getFakeData());
+        $this->assertEquals($this->getFakeData()["name"], $mockedUser->name);
     }
 
 
