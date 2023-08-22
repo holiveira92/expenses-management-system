@@ -48,6 +48,11 @@ Docker
  docker-compose up -d
 ```
 
+## Mailpit - Caixa de email
+```sh
+ http://localhost:8025/
+```
+
 ## Documentação
 ```sh
  https://documenter.getpostman.com/view/2s9Y5Tzjiy?version=latest
