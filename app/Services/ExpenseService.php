@@ -53,9 +53,9 @@ class ExpenseService
      * @param int $userId - ID do recurso
      * @return Expense - dados do usuário
      */
-    public function update(int $userId, array $requestData): Expense
+    public function update(int $expenseId, array $requestData): Expense
     {
-        return $this->repository->persist($userId, $requestData);
+        return $this->repository->persist($expenseId, $requestData);
     }
 
     /**
